@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>超级管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <!-- load css -->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/bootstrap.min.css?v=v3.3.7" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/font/iconfont.css?v=1.0.0" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/layui.css?v=1.0.9" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/main.css?v1.3.4" media="all">
+
+    <!-- 引入 jquery.js -->
+    <script src="../Static/admin/jQuery/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid larry-wrapper">
+        <!--顶部统计数据预览 -->
+        <div class="row">
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <section class="panel">
+                    <div class="symbol bgcolor-blue"> <i class="iconfont">&#xe74d;</i>
+                    </div>
+                    <div class="value">
+                            <h1 id="lepkw">150</h1>
+                            <span>董小松</span>
+                    </div>
+                </section>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <section class="panel">
+                    <div class="symbol bgcolor-commred"> <i class="iconfont">&#xe74d;</i></div>
+                    <div class="value">
+                            <h1 id="lepks">150</h1>
+                            <span>董小松</span>
+
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <section class="panel">
+                    <div class="symbol bgcolor-dark-green"> <i class="iconfont">&#xe74d;</i>
+                    </div>
+                    <div class="value">
+                            <h1 id="lepgz">150</h1>
+                            <span>董小松</span>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <section class="panel">
+                    <div class="symbol bgcolor-yellow-green"> <i class="iconfont">&#xe74d;</i></div>
+                    <div class="value">
+                            <h1 id="lepfx">150</h1>
+                            <span>董小松</span>
+                    </div>
+                </section>
+            </div>
+
+
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <section class="panel">
+                    <div class="symbol" style="background: #0000CC"> <i class="iconfont">&#xe74d;</i>
+                    </div>
+                    <div class="value">
+                            <h1 id="lepyl">150</h1>
+                            <span>董小松</span>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <section class="panel">
+                    <div class="panel-heading">
+                        数据统计
+                        <a href="javascript:;" class="pull-right panel-toggle"><i class="iconfont">&#xe604;</i></a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="echarts" id="le_show"></div>
+                    </div>
+                </section>
+
+            </div>
+
+
+            <div class="col-xs-12 col-md-6">
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        数据统计
+                        <a href="javascript:;" class="pull-right panel-toggle"><i class="iconfont">&#xe604;</i></a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="echarts" id="echarts"></div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
+        <button data-method="notice" class="layui-btn">示范一个公告层</button>
+    </div>
+
+    <div class="testcatch" style="display: none;">
+        <p>这是一个捕获弹窗</p>
+    </div>
+</body>
+<script type="text/javascript" src="../Static/admin/js/layui/layui.js"></script>
+
+
+
+<script>
+    layui.config({
+        base: '../Static/admin/js/',
+        version: "1.3.4r2"
+    }).extend({
+        elem: 'jqmodules/elem',
+        tabmenu: 'jqmodules/tabmenu',
+        jqmenu: 'jqmodules/jqmenu',
+        ajax: 'jqmodules/ajax',
+        dtable: 'jqmodules/dtable',
+        jqdate: 'jqmodules/jqdate',
+        modal: 'jqmodules/modal',
+        tags: 'jqmodules/tags',
+        jqform: 'jqmodules/jqform',
+        echarts: 'lib/echarts/echarts',
+        webuploader: 'lib/webuploader',
+        leajax: 'jqmodules/jquery-3.3.1.min'
+    })
+</script>
+
+</html>

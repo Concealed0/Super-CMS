@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.UserGroupMapper">
+  <resultMap id="BaseResultMap" type="com.song.model.AdminUser">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+    <result column="ceshi" jdbcType="VARCHAR" property="ceshi" />
+    <association property="admingroup" javaType="com.song.model.AdminGroup">
+            <id column="group_id" jdbcType="INTEGER" property="groupId" />
+            <result column="name" jdbcType="VARCHAR" property="name" />
+            <result column="base_purview" jdbcType="VARCHAR" property="basePurview" />
+            <result column="menu_purview" jdbcType="VARCHAR" property="menuPurview" />
+            <result column="status" jdbcType="INTEGER" property="status" />
+     </association>
+  </resultMap>
+  
+   <!-- ******************************************************************************** -->
+  <select id="selusergroup"  resultMap="BaseResultMap">
+   select * from le_admin_user u,le_admin_group g where u.group_id=g.group_id
+  </select>
+  <select id="usergroup" parameterType="int" resultMap="BaseResultMap">
+   select * from le_admin_user u JOIN le_admin_group g ON u.group_id=g.group_id where u.user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  
+</mapper>

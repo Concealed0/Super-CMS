@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//www.mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">     
+<configuration> 
+
+
+<!-- 开启二级缓存 
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings> 
+    -->
+    <!-- 全局别名设置，在映射文件中只需写别名，而不必写出整个类路径 
+     
+    <typeAliases>    
+         <typeAlias type="com.song.model.User" alias="user"/>  
+    </typeAliases>  
+ -->   
+     <mappers>         
+        <mapper resource="com/song/mapping/AdminMenuMapper.xml" />
+        <mapper resource="com/song/mapping/AdminUserMapper.xml" />
+        <mapper resource="com/song/mapping/AdminLogMapper.xml" />
+        <mapper resource="com/song/mapping/AdminGroupMapper.xml" />
+        <mapper resource="com/song/mapping/UserGroupMapper.xml" />
+    </mappers>
+</configuration> 

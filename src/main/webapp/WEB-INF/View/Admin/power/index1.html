@@ -1,0 +1,58 @@
+<script src="../Static/js/include.js"></script>
+<include src="../PowerCon/header">
+	<div class="layui-form">
+		<table class="layui-table lay-even" id="powermenu">
+			<thead>
+				<tr>
+					<th width="80">LogId</th>
+					<th>LogIp</th>
+					<th width="180">logUser</th>
+					<th>logTime</th>
+					<th>logGroup</th>
+					<th width="240">logApp</th>
+					<th>logCon</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+
+<include src="../PowerCon/footer">
+<script type="text/javascript" src="../Static/admin/js/layui/layui.js"></script>
+<script>
+    layui.use('default');
+</script>
+<script>
+    layui.use('jquery', function() {
+    	$ = layui.jquery;
+    	console.log("测试数据！");
+    	$.ajax({
+			type : "post",
+			async : false,//不加直接error
+			url : '/SuperCMS/MenuCon/userhome',
+			success : function(res) {
+				console.log(res);
+		        var tdArr = document.getElementById('powermenu').firstElementChild;
+		        for (var i = 0; i < res[0].data.length; i++) {
+		            var tr = document.createElement("tr");
+		            tr.innerHTML = '<td>' + res[0].data[i].logId + '</td>'
+		                           +'<td>' + res[0].data[i].logIp + '</td>'
+		                           +'<td>' + res[0].data[i].logUser + '</td>'
+		                           +'<td>' + res[0].data[i].logTime + '</td>'
+		                           +'<td>' + res[0].data[i].logGroup + '</td>'
+		                           +'<td>' + res[0].data[i].logApp + '</td>'
+		                           +'<td>' + res[0].data[i].logCon + '</td>';
+		            tdArr.appendChild(tr)
+		        }		
+			},
+    	    error: function () {
+             console.log("超级权限菜单！");
+            }
+		});
+    });
+</script>
+
+</body>
+</html>

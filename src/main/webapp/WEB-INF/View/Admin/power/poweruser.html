@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>超级管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <!-- load css -->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/bootstrap.min.css?v=v3.3.7" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/font/iconfont.css?v=1.0.0" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/layui.css?v=1.0.9" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/main.css?v1.3.4" media="all">
+   
+   
+    <!-- 引入css文件-->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/css.css">
+    
+
+</head>
+<body>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!--列表-->
+            <section class="panel panel-padding" style="height:40px;margin-bottom:4px">
+                <div class="group-button">
+                    <a href="../PowerCon/powerusermenu" class="layui-btn layui-btn-small">用户列表</a>
+                    <a href="../PowerCon/powerinfo" class="layui-btn layui-btn-small" style="float:right;">添加用户</a>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="layui-form">
+		<table class="layui-table lay-even" id="poweruser">
+			<thead>
+				<tr>
+                    <th width="80">ID</th>
+                    <th>账号</th>
+                    <th>用户名</th>
+                    <th>电话</th>
+                    <th>登陆时间</th>
+                    <th>状态</th>
+                    <th width="240">操作</th>
+                </tr>
+			</thead>
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+	</body>
+	
+<script src="../Static/admin/js/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../Static/admin/js/',   //假设这是你存放拓展模块的根目录
+        version: "1.3.4r"        //设定模块别名
+    }).extend({
+        elem: 'jqmodules/elem',
+        tabmenu: 'jqmodules/tabmenu',
+        jqmenu: 'jqmodules/jqmenu',
+        ajax: 'jqmodules/ajax',
+        dtable: 'jqmodules/dtable',
+        jqdate: 'jqmodules/jqdate',
+        modal: 'jqmodules/modal',
+        tags: 'jqmodules/tags',
+        jqform: 'jqmodules/jqform',
+        echarts: 'lib/echarts',
+        webuploader: 'lib/webuploader'
+    })
+</script>
+
+<script>
+    layui.use('default');
+</script>
+<script>
+    layui.use(['jquery'], function() {
+    	$ = layui.jquery;
+    	//form = layui.form();
+    	console.log("测试数据！");
+    	var idlength;
+    	var data;
+    	$.ajax({
+			type : "post",
+			async : false,//不加直接error
+			url : '/SuperCMS/PowerCon/poweruser',
+			success : function(res) {
+				data=res;
+				idlength=res.data.length;
+			},
+    	    error: function () {
+             console.log("超级权限菜单！");
+            }
+		});
+    	console.log(idlength);
+    	console.log(data);
+    	var tdArr = document.getElementById('poweruser').firstElementChild;
+        for (var i = 0; i < data.data.length; i++) {
+            var tr = document.createElement("tr");		            
+            tr.innerHTML = '<td>' + data.data[i].userId + '</td>'
+                           +'<td>' + data.data[i].groupId + '</td>'
+                           +'<td>' + data.data[i].username + '</td>'
+                           +'<td>' + data.data[i].tel + '</td>'
+                           +'<td>' + data.data[i].lastLoginTime + '</td>'
+                           +'<td><input type="checkbox" name="field_value" value="1" lay-skin="switch" lay-filter="ajax" lay-text="正常|禁用"  data-params /></td>'
+                           +'<td><a href="" class="layui-btn layui-btn-mini modal-catch">'
+                           +'<i class="iconfont">&#xe653;</i>编辑</a>'
+                           +'<a class="layui-btn layui-btn-mini layui-btn-danger ajax" data-list="" data-params="">'
+                           +'<i class="iconfont">&#xe626;</i>删除</a>'            
+                           +'</td>';		            
+            tdArr.appendChild(tr);           
+        }
+        for(var i=0;i<data.data.length;i++){
+        	//$("input").eq(i).attr("id","id"+i);
+        	//document.getElementById($("input").eq(i).attr("id")).value=data.data[i].username;
+        	console.log(data.data[i].status);
+        	var pardata='{"url":"/SuperCMS/PowerCon/powerapi","confirm":"true","data":"table=le_admin_user&id_name='+data.data[i].username+'&id_value='+data.data[i].userId+'&field=status","complete":"up"}';
+        	var parlista='{"key":"id="'+data.data[i].userId+',"msg":true,"render":"true","action":"del"}'
+        	var pardataa='{"url": "/SuperCMS/PowerCon/powerdel","confirm":"true","data":"id='+data.data[i].userId+'","complete":"del"}'
+        	//"{:url('info',array('user_id'=>$vo['user_id']))}"
+        	var parhref='/SuperCMS/PowerCon/powerinfo?user_id='+data.data[i].userId+'';
+        	console.log(parhref);
+        	console.log(pardataa);
+        	//document.getElementById($("input").eq(i).attr("data-params",pardata));
+        	//document.getElementsByTagName($("a").eq(2i+1).attr("data-params",pardataa));
+        	//document.getElementsByTagName($("a").eq(2i+1).attr("data-list",parlista));
+        	$("input").eq(i).attr("data-params",pardata);
+        	$("a").eq(2*i+2).attr("href",parhref);
+        	$("a").eq(parseInt(2*i+3)).attr("data-params",pardataa);
+        	$("a").eq(parseInt(2*i+3)).attr("data-list",parlista);
+        	console.log($("a").eq(parseInt(2*i+3)));
+        	//console.log($("a").eq(i));
+        	//console.log($("input").eq(i));
+        	if(data.data[i].status==1){
+        		//console.log("111111111111");
+        		//document.getElementById($("input").eq(i).attr("id")).checked="true";
+        		$("input").eq(i).attr("checked",true);
+        	}           	
+            else{
+            	//console.log("00000000000");
+            	//document.getElementById($("input").eq(i).attr("id")).checked="false";
+            	$("input").eq(i).attr("checked",false);
+            }
+            	
+        }   	
+    	
+    });
+</script>
+
+</html>
+	
+	

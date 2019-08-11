@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:hdp="http://www.springframework.org/schema/hadoop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/tx 
+     http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/hadoop 
+     http://www.springframework.org/schema/hadoop/spring-hadoop.xsd">    
+
+
+    <!-- 关系型数据逻辑自动注入 -->
+    <context:component-scan base-package="com.song">
+    <!-- 不扫描控制器 其他的都要 -->
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    <!-- 分布式逻辑自动注入 -->
+    <context:component-scan base-package="com.hbase">
+    <!-- 不扫描控制器 其他的都要 -->
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    
+    
+    
+    <!-- 加载properties文件  
+   <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:mysqldb.properties</value>
+            </list>
+        </property>
+    </bean>
+ -->   
+    <!-- 配置zookeeper的信息，远程连接hbase时使用 -->
+	<hdp:configuration resources="classpath:hbase-site.xml" />
+	<hdp:hbase-configuration configuration-ref="hadoopConfiguration" />
+	
+	<!-- 配置HbaseTemplate -->
+	<bean id="htemplate" class="org.springframework.data.hadoop.hbase.HbaseTemplate">
+		<property name="configuration" ref="hbaseConfiguration">
+		</property>
+	<property name="encoding" value="UTF-8"></property>
+	</bean>
+    
+</beans>

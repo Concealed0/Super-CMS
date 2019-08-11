@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="  
+     http://www.springframework.org/schema/beans   
+     http://www.springframework.org/schema/beans/spring-beans.xsd  
+     http://www.springframework.org/schema/context  
+     http://www.springframework.org/schema/context/spring-context.xsd  
+     http://www.springframework.org/schema/mvc  
+     http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	
+	<!-- ========================================分隔线========================================= -->
+	<!-- springmvc配置文件，包含关系型网站的跳转逻辑的控制 -->
+	<context:component-scan
+		base-package="com.song.controller" />
+		
+	<!-- springMVC的配置文件，包含网站跳转逻辑的控制 -->
+	<context:component-scan
+		base-package="com.hbase" use-default-filters="false">
+		<!-- 禁用默认的过滤规则 -->
+		<!-- 只扫描控制器 -->
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- ========================================分隔线========================================= -->
+	<!--自定义消息转换器的编码,解决后台传输json回前台时，中文乱码问题 -->
+	<bean id="stringHttpMessageConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<constructor-arg value="UTF-8" />
+	</bean>
+	<!-- 配置json转换器 -->
+	<bean id="jsonMessageConverters"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+	<bean id="fastJsonHttpMessageConverter"
+		class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+				<value>text/html;charset=UTF-8</value>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<ref bean="stringHttpMessageConverter" />
+			<ref bean="jsonMessageConverters" />
+			<ref bean="fastJsonHttpMessageConverter" />
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+
+
+
+	<!-- ========================================分隔线========================================= -->
+	<!-- 完成请求和注解POJO的映射 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    </bean>
+
+
+
+	<!-- ========================================分隔线========================================= -->
+	<!-- 视图解析器1:html视图解析器 必须先配置freemarkerConfig,注意html是没有prefix前缀属性的 -->
+	<!-- 定义HTML文件的位置 -->
+	<bean id="htmlviewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="com.song.common.HtmlResourceView" /><!-- 改成你自己的第一步新建的解析类路径 -->
+		<property name="order" value="0" />
+		<!-- 前缀 -->
+		<property name="prefix" value="/WEB-INF/View/" />
+		<property name="suffix" value=".html" />
+	</bean>
+	<!-- 定义JSP文件的位置 -->
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="order" value="1" />
+		<!-- 前缀 -->
+		<property name="prefix" value="/WEB-INF/View/" />
+		<!-- 后缀 -->
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+</beans>

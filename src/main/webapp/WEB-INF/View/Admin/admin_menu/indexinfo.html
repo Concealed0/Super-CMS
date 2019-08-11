@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>超级管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <!-- load css -->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/bootstrap.min.css?v=v3.3.7" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/font/iconfont.css?v=1.0.0" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/layui.css?v=1.0.9" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/main.css?v1.3.4" media="all">
+   
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/font/demo.css">
+   
+    <!-- 引入css文件-->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/css.css">
+    
+
+</head>
+<body>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!--列表-->
+            <section class="panel panel-padding" style="height:40px;margin-bottom:4px">
+                <div class="group-button">
+                    <a href="../AdminMenuCon/adminindex" class="layui-btn layui-btn-small">用户菜单</a>
+                    <a href="../SuperApi/menuinfo" class="layui-btn layui-btn-small" style="float:right;">添加菜单</a>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="menuinfoupdata">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单组</label>
+                        <div class="layui-input-inline">
+                            <select class="tpl-form-input" id="select" jq-verify="required" jq-error="请选择用户组" lay-filter="pid" name="pid">
+                                <option value="0" id="opt0">顶级菜单</option>
+ 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="name" name="name" value="" jq-verify="required" jq-error=" 请输入菜单名" placeholder="请输入菜单名" class="layui-input ">
+                        </div>
+                    </div>
+
+ 
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地址url</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="url" name="url" value="" jq-verify="" jq-error="请输入地址url" placeholder="请输入地址url" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">选择图标</label>
+                        <div class="layui-input-block" id="icon">
+
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" id="status" name="status"  title="正常" value="1" />
+                            <input type="radio" id="status1" name="status"  title="禁用" value="2" />
+                        </div>
+                    </div>
+                    <div class="layui-input-block">
+                        <input type="hidden" id="id" name="id" type="hidden" value="">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="../Static/admin/js/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../Static/admin/js/',   //假设这是你存放拓展模块的根目录
+        version: "1.3.4r"        //设定模块别名
+    }).extend({
+        elem: 'jqmodules/elem',
+        tabmenu: 'jqmodules/tabmenu',
+        jqmenu: 'jqmodules/jqmenu',
+        ajax: 'jqmodules/ajax',
+        dtable: 'jqmodules/dtable',
+        jqdate: 'jqmodules/jqdate',
+        modal: 'jqmodules/modal',
+        tags: 'jqmodules/tags',
+        jqform: 'jqmodules/jqform',
+        echarts: 'lib/echarts',
+        webuploader: 'lib/webuploader'
+    })
+</script>
+<script>
+    var num="{$start_act|default='1'}";
+    layui.use('myform', function(){
+        var form = layui.form();
+        var $= layui.jquery;
+        $("#add_act").click(function() {
+            $("#act").append(
+                    "<div class='layui-form-item'>" +
+                    "<label class='layui-form-label'>名称</label>" +
+                    "<div class='layui-input-inline'>" +
+                    "<input type='text' name='act["+num+"][name]' value='' placeholder='请输入' class='layui-input '>" +
+                    "</div>" +
+                    "<label class='layui-form-label'>方法</label>" +
+                    "<div class='layui-input-inline' style='width: 500px;'>" +
+                    "<input type='text' name='act["+num+"][act]' value='' placeholder='请输入' class='layui-input'>" +
+                    "</div>" +
+                    "<button class='layui-btn layui-btn-danger del_act'  onclick='del_act(this)' type='button'>-</button>" +
+                    "</div>");
+            num++;
+        });
+    });
+    function del_act(obj) {
+        var $= layui.jquery;
+        $(obj).parent().remove();
+        num--;
+    }
+
+</script>
+<script>
+    layui.use(['jquery'], function() {
+    	$ = layui.jquery;
+    	//form = layui.form();
+    	console.log("__________________超级菜单编辑页面____________________");
+    	var menualldata;
+    	var menuonedata;
+    	var selectapi=-1;
+    	var selectpid=-1;
+    	$.ajax({
+			type : "post",
+			async : false,//不加直接error
+			url : '/SuperCMS/SuperApi/menuinfodata',
+			success : function(res) {
+				if(res.status!=0){
+					console.log(res);
+					menuonedata=res;
+					document.getElementById('name').value = res.data[0].name;   //清空
+			        document.getElementById('url').value = res.data[0].url;   //清空
+			        document.getElementById('id').value = res.data[0].id;   //清空
+			        selectapi=menuonedata.data[0].id;
+			    	selectpid=menuonedata.data[0].pid;
+			    	selecticon=menuonedata.data[0].iconfont;
+			        if(res.data[0].status==1){
+			  			$('#status').attr('checked', true);
+			  		}else{
+			  			$('#status1').attr('checked', true);
+			  		}
+				}			
+			},
+    	    error: function () {
+             console.log("超级权限菜单！单个菜单的选择");
+            }
+		});
+    	
+    	console.log(selectapi);         
+     	$.ajax({
+			type : "post",
+			async : false,//不加直接error
+			url : '/SuperCMS/AdminMenuCon/menupowerapi',
+			success : function(res) {
+				console.log(res);
+				menualldata=res;				
+				for (var i = 1; i < res.length+1; i++) { 
+					var a="opt"+i;
+					var myOption = document.createElement("option");
+					$("#select").append("<option id='"+a+"' value='"+res[i-1].id+"'>"+res[i-1].cname+"</option>");
+					if(selectapi==res[i-1].id){
+						$('#'+a).attr('selected',"selected");
+					}else
+						$('#opt0').attr('selected',"selected");
+		        }
+				/*
+				var selectObj=document.getElementById('select');
+				for (var i = 1; i < menualldata.length+1; i++) { 
+					var a="opt"+i;
+					var myOption = document.createElement("option");
+					myOption.setAttribute("id",a);
+					myOption.setAttribute("value",menualldata[i-1].pid);
+					myOption.appendChild(document.createTextNode(menualldata[i-1].name));
+				    myOption.innerHTML('<option>'+menualldata[i-1].cname+'</option>');
+					selectObj.appendChild(myOption);
+					if(selectapi==menualldata[i-1].id){
+						$('#'+a).attr('selected',"selected");
+					}else
+						$('#opt0').attr('selected',"selected");
+		        }
+				
+				*/
+
+			},
+    	    error: function () {
+             console.log("超级权限菜单！菜单组选择");
+            }
+		});
+    	//获取图标
+    	console.log(selecticon);
+     	$.ajax({
+			type : "post",
+			async : false,//不加直接error
+			url : '/SuperCMS/AdminMenuCon/icon',
+			success : function(res) {
+				console.log("-----这是系统的图标——————————")
+				console.log(res);			
+				for(var i=0;i<res.iconfont.length;i++){
+					var icon="&"+res.iconfont[i].iconfont;
+					var iconid="icon"+i;
+					//console.log(iconid);
+					//console.log(icon);	
+					var iconi="<i class='iconfont'>"+icon+"</i>";
+					$("#icon").append("<input id='"+iconid+"' type='radio' name='iconfont' value='"+icon+"' title=''></input>");
+					$('#'+iconid).attr("title",iconi);
+					if(selecticon==icon){
+						$('#'+iconid).attr('checked',"checked");
+					}
+				}
+				console.log($("allalallalalallal"));	
+				console.log($('#icon1').attr("title"));	
+				console.log($('#icon1'));	
+			},
+    	    error: function () {
+             console.log("超级权限菜单！后台图标选择");
+            }
+		});
+      
+        
+    	
+    });
+</script>
+
+
+</html>

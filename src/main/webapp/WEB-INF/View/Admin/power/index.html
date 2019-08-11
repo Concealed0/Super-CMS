@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>超级管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <!-- load css -->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/bootstrap.min.css?v=v3.3.7" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/font/iconfont.css?v=1.0.0" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/layui.css?v=1.0.9" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/main.css?v1.3.4" media="all">
+   
+   
+    <!-- 引入css文件-->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/css.css">
+    
+
+</head>
+<body>
+<div class="layui-form">
+		<table class="layui-table lay-even" id="powermenu">
+			<thead>
+				<tr>
+					<th width="80">LogId</th>
+					<th>LogIp</th>
+					<th width="180">logUser</th>
+					<th>logTime</th>
+					<th>logGroup</th>
+					<th width="240">logApp</th>
+					<th>logCon</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+	</body>
+	
+<script src="../Static/admin/js/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../Static/admin/js/',   //假设这是你存放拓展模块的根目录
+        version: "1.3.4r"        //设定模块别名
+    }).extend({
+        elem: 'jqmodules/elem',
+        tabmenu: 'jqmodules/tabmenu',
+        jqmenu: 'jqmodules/jqmenu',
+        ajax: 'jqmodules/ajax',
+        dtable: 'jqmodules/dtable',
+        jqdate: 'jqmodules/jqdate',
+        modal: 'jqmodules/modal',
+        tags: 'jqmodules/tags',
+        jqform: 'jqmodules/jqform',
+        echarts: 'lib/echarts',
+        webuploader: 'lib/webuploader'
+    })
+</script>
+
+<script>
+    layui.use('default');
+</script>
+<script>
+    layui.use('jquery', function() {
+    	$ = layui.jquery;
+    	console.log("测试数据！");
+    	$.ajax({
+			type : "post",
+			async : false,//不加直接error
+			url : '/SuperCMS/PowerCon/index',
+			success : function(res) {
+		        var tdArr = document.getElementById('powermenu').firstElementChild;
+		        for (var i = 0; i < res.data.length; i++) {
+		            var tr = document.createElement("tr");
+		            tr.innerHTML = '<td>' + res.data[i].logId + '</td>'
+		                           +'<td>' + res.data[i].logIp + '</td>'
+		                           +'<td>' + res.data[i].logUser + '</td>'
+		                           +'<td>' + res.data[i].logTime + '</td>'
+		                           +'<td>' + res.data[i].logGroup + '</td>'
+		                           +'<td>' + res.data[i].logApp + '</td>'
+		                           +'<td>' + res.data[i].logCon + '</td>';
+		            tdArr.appendChild(tr)
+		        }		
+			},
+    	    error: function () {
+             console.log("超级权限菜单！");
+            }
+		});
+    });
+</script>
+
+</html>
+	

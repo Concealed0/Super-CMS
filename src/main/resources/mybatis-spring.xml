@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-4.0.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+     http://www.springframework.org/schema/tx 
+     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- 配置数据源 -->
+	<!-- 自动扫描 -->
+	<!-- 第一种方式：加载一个properties文件 -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:mysqldb.properties</value>
+            </list>
+        </property>
+        <property name="ignoreUnresolvablePlaceholders" value="true" /> 
+    </bean>
+    <!--  
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location"
+			value="classpath:mysqldb.properties" />
+	</bean>
+-->
+	<!-- 阿里 druid 数据库连接池 -->
+	<bean id="dataSource"
+		class="com.alibaba.druid.pool.DruidDataSource">
+		<!-- 基本属性 url、user、password -->
+		<property name="driverClassName"
+			value="${jdbc.driverClassName}" />
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/supercms?useUnicode=true&amp;useSSL=false&amp;serverTimezone=CTT&amp;characterEncoding=UTF-8" />
+		<property name="username" value="root" />
+		<property name="password" value="song233" />
+		<property name="initialSize" value="1" />
+		<property name="minIdle" value="1" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="60000" />
+		<!-- 超过时间限制是否回收 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 超过时间限制多长； -->
+		<property name="removeAbandonedTimeout" value="180" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<!-- 用来检测连接是否有效的sql，要求是一个查询语句 -->
+		<property name="validationQuery" value="SELECT 1" />
+		<!-- 申请连接的时候检测 -->
+		<property name="testWhileIdle" value="true" />
+		<!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+		<property name="testOnBorrow" value="false" />
+		<!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+		<property name="testOnReturn" value="false" />
+	</bean>
+
+
+	<!-- ========================================分隔线========================================= -->
+
+	<!-- ========================================针对myBatis的配置项============================== -->
+	<!-- 配置sqlSessionFactory -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 实例化sqlSessionFactory时需要使用上述配置好的数据源以及SQL映射文件 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描me/gacl/mapping/目录下的所有SQL映射的xml文件, 省掉Configuration.xml里的手工配置 value="classpath:me/gacl/mapping/*.xml"指的是classpath(类路径)下me.gacl.mapping包中的所有xml文件 
+			UserMapper.xml位于me.gacl.mapping包下，这样UserMapper.xml就可以被自动扫描 -->
+		<!-- <property name="mapperLocations" value="classpath:me/gacl/mapping/*.xml" 
+			/> -->
+	</bean>
+	<!-- 扫描dao接口 -->
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.song.dao" />
+		<!-- 使用sqlSessionFactoryBeanName属性，注入不同的sqlSessionFactory的名称，这样的话，就为不同的数据库对应的 mapper 接口注入了对应的 sqlSessionFactory -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	
+
+
+	<!-- ========================================分隔线========================================= -->
+
+	<!-- ========================================针对myBatis的配置项============================== -->
+	<!-- 注：定义2个MapperScannerConfigurer 时要保证两个映射dao接口不能处于同一个包下。不然会发生找不到第二个dao接口方法异常 -->
+	<!-- 第二个数据库连接 -->
+	<bean id="dataSource_two"
+		class="com.alibaba.druid.pool.DruidDataSource">
+		<!-- 基本属性 url、user、password -->
+		<property name="driverClassName"
+			value="${jdbc.driverClassName}" />
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/wisdom?useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8" />
+		<property name="username" value="root" />
+		<property name="password" value="song233" />
+		<property name="initialSize" value="1" />
+		<property name="minIdle" value="1" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="60000" />
+		<!-- 超过时间限制是否回收 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 超过时间限制多长； -->
+		<property name="removeAbandonedTimeout" value="180" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<!-- 用来检测连接是否有效的sql，要求是一个查询语句 -->
+		<property name="validationQuery" value="SELECT 1" />
+		<!-- 申请连接的时候检测 -->
+		<property name="testWhileIdle" value="true" />
+		<!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+		<property name="testOnBorrow" value="false" />
+		<!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+		<property name="testOnReturn" value="false" />
+	</bean>
+
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 第二个数据库链接 -->
+	<!-- 配置sqlSessionFactory -->
+	<bean id="sqlSessionFactory_two"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 实例化sqlSessionFactory时需要使用上述配置好的数据源以及SQL映射文件 -->
+		<property name="configLocation" value="classpath:twomybatis-config.xml" />
+		<property name="dataSource" ref="dataSource_two" />
+		<!-- 自动扫描映射文件路径 -->
+		<!-- <property name="mapperLocations" value="com/huawei/mapping/*.xml" 
+			/> -->
+	</bean>
+
+	<!-- 第二个数据库DAO连接-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.song.daotwo" />
+		<property name="sqlSessionFactoryBeanName"
+			value="sqlSessionFactory_two" />
+	</bean>
+ 
+	<!-- 事务管理器 -->
+	<bean id="transactionManager_two"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_two" />
+	</bean>
+
+
+
+
+	<!-- ========================================分隔线========================================= -->
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
+</beans>

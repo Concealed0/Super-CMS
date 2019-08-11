@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>超级管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <!-- load css -->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/bootstrap.min.css?v=v3.3.7" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/font/iconfont.css?v=1.0.0" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/layui.css?v=1.0.9" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/main.css?v1.3.4" media="all">
+   
+   
+    <!-- 引入css文件-->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/css.css">
+    
+
+</head>
+<body>
+<div class="layui-form">
+		<table class="layui-table lay-even" id="poweruser">
+			<thead>
+				<tr>
+                    <th width="80">ID</th>
+                    <th>账号</th>
+                    <th>用户名</th>
+                    <th>电话</th>
+                    <th>登陆时间</th>
+                    <th>状态</th>
+                    <th width="240">操作</th>
+                </tr>
+			</thead>
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+	</body>
+	
+<script src="../Static/admin/js/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../Static/admin/js/',   //假设这是你存放拓展模块的根目录
+        version: "1.3.4r"        //设定模块别名
+    }).extend({
+        elem: 'jqmodules/elem',
+        tabmenu: 'jqmodules/tabmenu',
+        jqmenu: 'jqmodules/jqmenu',
+        ajax: 'jqmodules/ajax',
+        dtable: 'jqmodules/dtable',
+        jqdate: 'jqmodules/jqdate',
+        modal: 'jqmodules/modal',
+        tags: 'jqmodules/tags',
+        jqform: 'jqmodules/jqform',
+        echarts: 'lib/echarts',
+        webuploader: 'lib/webuploader'
+    })
+</script>
+
+<script>
+    layui.use('default');
+</script>
+<script>
+    layui.use('jquery', function() {
+    	$ = layui.jquery;
+    	console.log("测试数据！");
+    	var idlength;
+    	$.ajax({
+			type : "post",
+			async : false,//不加直接error
+			url : '/SuperCMS/PowerCon/poweruser',
+			success : function(res) {
+				console.log(res);
+				console.log(res.data);
+				console.log(res.data);
+				console.log(res.data[0]);
+				idlength=res.data.length;
+		        var tdArr = document.getElementById('poweruser').firstElementChild;
+		        for (var i = 0; i < res.data.length; i++) {
+		            var tr = document.createElement("tr");		            
+		            tr.innerHTML = '<td>' + res.data[i].userId + '</td>'
+		                           +'<td>' + res.data[i].groupId + '</td>'
+		                           +'<td>' + res.data[i].username + '</td>'
+		                           +'<td>' + res.data[i].tel + '</td>'
+		                           +'<td>' + res.data[i].lastLoginTime + '</td>'
+		                           +'<td><input  type="checkbox" lay-skin="switch" lay-text="正常|禁用"  /></td>';		            
+		            tdArr.appendChild(tr);
+		            //jquery获取到一个input中的id，给id赋值
+		            var id=$("input").attr("id","id"+i);
+		            //jquery获取页面的input 然后循环所有的input中的值
+		            console.log($("input").attr("id"));
+		            
+		            document.getElementById($("input").attr("id")).value=res.data[i].username;
+		            console.log(document.getElementById($("input").attr("id")).value);
+		            //jquery获取$("input").attr("id")中的值
+		            if(res.data[i].status==1)
+		            	document.getElementById($("input").attr("id")).checked="true";
+		            else
+		            	document.getElementById($("input").attr("id")).checked="false";
+		            
+		        }		
+			},
+    	    error: function () {
+             console.log("超级权限菜单！");
+            }
+		});
+    	console.log(idlength);
+    	$(function(){ 
+    		console.log(idlength);
+    		for(var i=0;i<idlength;i++){
+    			$("input").eq(i).attr("id","id"+i);
+    			console.log($("input").eq(i).attr("id"));
+    			console.log(document.getElementById($("input").eq(i).attr("id")).value);
+    			document.getElementById($("input").eq(i).attr("id")).onclick = function ( ) {  console.log("-----"); }
+    		}
+    		 var inputArray=$("input");//取到所有的input 并且放到一个数组中
+
+    		 inputArray.each(//使用数组的循环函数 循环这个input数组
+    		    function (){
+    		        var input =$(this);//循环中的每一个input元素
+    		        console.log(input.attr("id"));//查看循环中的每一个input的id    		        
+    		    }
+    		 );
+    		
+    		
+    		$("#id00").click(function(){
+    			console.log("-----");
+    			alert("111111111");
+    			//console.log(document.getElementById("id"+i).value);
+    		});  
+    		
+    		
+    		
+    		
+    		  
+        	//*************************************************************
+        	var idname = new Array();
+        	console.log(idlength);
+    		for(var i=0;i<idlength;i++){
+    			console.log($("input").eq(i).attr("id"));
+    			console.log(document.getElementById($("input").eq(i).attr("id")).value);
+    			idname[i]=("#"+$("input").eq(i).attr("id"));    
+    			console.log(idname[i]);
+    			//document.getElementById($("input").eq(i).attr("id")).onclick = function ( ) {  console.log("-----"); }
+    		}
+    		 var inputArray=$("input");//取到所有的input 并且放到一个数组中
+    		 inputArray.each(//使用数组的循环函数 循环这个input数组
+    		    function (){
+    		        var input =$(this);//循环中的每一个input元素
+    		        console.log(input.attr("id"));//查看循环中的每一个input的id    		        
+    		    }
+    		 );
+        	
+    		$(document).ready(function(){
+    			$("#id1").click(function(){
+    			alert("Hello World...");
+    			})
+    			})
+        		
+        
+        	console.log(idname);
+        	console.log(idname[0]);
+    		
+    		
+    		
+    	});
+    });
+</script>
+
+
+
+
+</html>
+

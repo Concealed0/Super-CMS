@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>超级管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <!-- load css -->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/bootstrap.min.css?v=v3.3.7" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/font/iconfont.css?v=1.0.0" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/layui.css?v=1.0.9" media="all">
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/main.css?v1.3.4" media="all">
+   
+   
+    <!-- 引入css文件-->
+    <link rel="stylesheet" type="text/css" href="../Static/admin/css/css.css">
+    
+
+</head>
+<body>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!--列表-->
+            <section class="panel panel-padding" style="height:40px;margin-bottom:4px">
+                <div class="group-button">
+                    <a href="../PowerCon/powerusermenu" class="layui-btn layui-btn-small">用户菜单</a>
+                    <a href="../SuperApi/menuinfo" class="layui-btn layui-btn-small" style="float:right;">添加菜单</a>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="powerinfoupdata">
+                  <div class="layui-form-item">
+                        <label class="layui-form-label">用户组</label>
+                        <div class="layui-input-inline">
+                            <select class="tpl-form-input" jq-verify="required" jq-error="请选择用户组" lay-filter="verify" name="group_id">
+                                <option value="">请选择用户组</option>                               
+                                <option id="select1" value="1">管理员</option>
+                                <option id="select2" value="2">总裁</option>
+                                <option id="select3" value="3">客服</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">账号</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="username" name="username" value="" jq-verify="required" jq-error=" 请输入账号" placeholder="请输入账号" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">姓名</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="nicename" name="nicename" value="" jq-verify="" jq-error="请输入昵称" placeholder="请输入昵称" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="email" name="email" value="" required jq-verify="email" jq-error="邮箱格式不正确" placeholder="请输入邮箱" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                            <label class="layui-form-label">手机</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="le_tel" name="le_tel" value="" required jq-verify="phone" jq-error="手机格式不正确" placeholder="请输入手机号" class="layui-input ">
+                            </div>
+                        </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" id="password" name="password" jq-verify="" jq-error="请输入密码，不修改请留空" placeholder="请输入密码，不修改请留空" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" id="password2" name="password2" jq-verify="" jq-error="重复刚才输入的密码" placeholder="重复刚才输入的密码" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">用户状态</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" id="status" name="status"  title="正常" value="1" />
+                            <input type="radio" id="status1" name="status" title="禁用" value="2" />
+                        </div>
+                    </div>
+                    <div class="layui-input-block">
+                        <input type="hidden" id="user_id" name="user_id" type="hidden" value="">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../Static/admin/js/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../Static/admin/js/',   //假设这是你存放拓展模块的根目录
+        version: "1.3.4r"        //设定模块别名
+    }).extend({
+        elem: 'jqmodules/elem',
+        tabmenu: 'jqmodules/tabmenu',
+        jqmenu: 'jqmodules/jqmenu',
+        ajax: 'jqmodules/ajax',
+        dtable: 'jqmodules/dtable',
+        jqdate: 'jqmodules/jqdate',
+        modal: 'jqmodules/modal',
+        tags: 'jqmodules/tags',
+        jqform: 'jqmodules/jqform',
+        echarts: 'lib/echarts',
+        webuploader: 'lib/webuploader'
+    })
+</script>
+
+<script>
+    layui.use('myform');
+</script>
+
+</html>

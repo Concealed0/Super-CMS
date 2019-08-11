@@ -1,0 +1,111 @@
+{extend name="Admin@public/base_content" /}
+{block name="body">}
+<body>
+        <div class="container-fluid larry-wrapper">
+                <!--顶部统计数据预览 -->
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4 col-md-2">
+                        <section class="panel">
+                            <div class="symbol bgcolor-blue"> <i class="iconfont">&#xe74d;</i>
+                            </div>
+                            <div class="value">
+                                    <h1 id="lepkw">0.0</h1>
+                                    <span>温度</span>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-2">
+                        <section class="panel">
+                            <div class="symbol bgcolor-commred"> <i class="iconfont">&#xe74d;</i></div>
+                            <div class="value">
+                                    <h1 id="lepks">0.0</h1>
+                                    <span>湿度</span>
+        
+                            </div>
+                        </section>
+                    </div>
+        
+                    <div class="col-xs-6 col-sm-4 col-md-2">
+                        <section class="panel">
+                            <div class="symbol bgcolor-dark-green"> <i class="iconfont">&#xe74d;</i>
+                            </div>
+                            <div class="value">
+                                    <h1 id="lepgz">0.0</h1>
+                                    <span>光照</span>
+                            </div>
+                        </section>
+                    </div>
+        
+                    <div class="col-xs-6 col-sm-4 col-md-2">
+                        <section class="panel">
+                            <div class="symbol bgcolor-yellow-green"> <i class="iconfont">&#xe74d;</i></div>
+                            <div class="value">
+                                    <h1 id="lepfx">0.0</h1>
+                                    <span>风向</span>
+                            </div>
+                        </section>
+                    </div>
+        
+                    <div class="col-xs-6 col-sm-4 col-md-2">
+                        <section class="panel">
+                            <div class="symbol bgcolor-yellow-green" style="background: #660000"> <i class="iconfont">&#xe74d;</i>
+                            </div>
+                            <div class="value"> 
+                                    <h1 id="lep2c">0.0</h1>
+                                    <span>二氧化碳</span>
+                            </div>
+                        </section>
+                    </div>
+        
+                    <div class="col-xs-6 col-sm-4 col-md-2">
+                        <section class="panel">
+                            <div class="symbol" style="background: #0000CC"> <i class="iconfont">&#xe74d;</i>
+                            </div>
+                            <div class="value">
+                                    <h1 id="lepyl">0.0</h1>
+                                    <span>雨量</span>
+                            </div>
+                        </section>
+                    </div>
+                   
+                </div>
+            </div>
+        
+<div class="header">
+
+        <span>
+            <font>A0 气象站</font>
+        </span>
+</div>
+        
+ 
+            <div class="meta_zhongaa" style="z-index: 9999; position: fixed ! important; right: 0px; top: 0px;">
+                    <button class="layui-btn layui-btn-radius layui-btn-normal" style="position: absolute; right: 450px; top: 120px;" type="button" onclick="three()">三天</button>
+                    <button class="layui-btn layui-btn-radius layui-btn-normal" style="position: absolute; right: 350px; top: 120px;" type="button" onclick="seven()">七天</button>
+                    <button class="layui-btn layui-btn-radius layui-btn-normal" style="position: absolute; right: 250px; top: 120px;" type="button" onclick="mouth_1()">一个月</button>
+                    <button class="layui-btn layui-btn-radius layui-btn-normal" style="position: absolute; right: 150px; top: 120px;" type="button" onclick="mouth_3()">三个月</button>
+                    <button class="layui-btn layui-btn-radius layui-btn-normal" style="position: absolute; right: 50px; top:  120px;" type="button" onclick="mouth_6()">六个月</button>
+            </div>
+
+     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+     <div style="height:600px;width:100%;margin:0 auto" id="lemain"></div> 
+     <div style="height:600px;width:100%;margin:0 auto" id="3echart"></div>
+     <div style="height:600px;width:100%;margin:0 auto" id="7echart"></div>
+     <div style="height:600px;width:100%;margin:0 auto" id="30echart"></div>
+     <div style="height:600px;width:100%;margin:0 auto" id="90echart"></div>
+     <div style="height:600px;width:100%;margin:0 auto" id="180echart"></div>
+    
+    <h1 id="meta"></h1>   
+    <div>检测名称</div>
+    <div id="device"></div>
+
+
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['default']);
+</script>
+{/block}
+
+

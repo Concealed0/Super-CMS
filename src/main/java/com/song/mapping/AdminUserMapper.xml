@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.AdminUserMapper">
+  <resultMap id="BaseResultMap" type="com.song.model.AdminUser">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+    <result column="ceshi" jdbcType="VARCHAR" property="ceshi" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, group_id, username, password, email, tel, status, last_login_time, last_login_ip, 
+    ceshi
+  </sql>
+  
+   <!-- 使用Redis二级缓存 
+    <cache type="com.song.redis.RedisCache"></cache>
+ -->   
+    
+    
+  <sql id="Base_Column_Listuser">
+    user_id, group_id, username, ceshi
+  </sql>
+  
+   <!-- ******************************************************************************** -->
+  
+  <select id="userlist001"  resultType="com.song.model.AdminUser">
+   select * from le_admin_user
+  </select>
+  <select id="selectAll"  resultMap="BaseResultMap">
+   select * from le_admin_user
+  </select>
+  
+  <select id="select" parameterType="com.song.model.AdminUser" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />		
+		from le_admin_user 
+		where username = #{username,jdbcType=VARCHAR} 
+		    and password = #{password,jdbcType=VARCHAR}
+		    and status=1
+	</select>
+	 <select id="selectstatus" parameterType="string" resultType="int">
+		select status		
+		from le_admin_user 
+		where username = #{username,jdbcType=VARCHAR} 
+	</select>
+	 <select id="selectuserid" parameterType="int" resultMap="BaseResultMap">
+		select 
+        <include refid="Base_Column_List" />
+        from le_admin_user
+        where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectGroup" parameterType="com.song.model.AdminUser" resultType="int">
+		select group_id from le_admin_user where username = #{username,jdbcType=VARCHAR} 
+	</select>
+	
+	
+	<select id="selectUser" parameterType="String" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_Listuser" />
+		 from le_admin_user where username = #{username,jdbcType=VARCHAR} 
+	</select>
+	
+	 <!-- ***********************************
+	 
+	 <select id="select" parameterType="com.song.model.AdminUser" resultType="com.song.model.AdminUser">
+		select 
+		user_id userId, 
+		group_id groupId, username, password, email, tel, status, 
+		last_login_time lastLoginTime, 
+		last_login_ip lastLoginIp,ceshi
+		
+		from le_admin_user where username = #{username,jdbcType=VARCHAR} 
+		and password = #{password,jdbcType=VARCHAR}
+	</select>
+	 
+	 
+	 ********************************************* -->
+	
+	
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from le_admin_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from le_admin_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.AdminUser">
+    insert into le_admin_user (user_id, group_id, username, 
+      password, email, tel, 
+      status, last_login_time, last_login_ip, 
+      ceshi)
+    values (#{userId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, 
+      #{ceshi,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.AdminUser">
+    insert into le_admin_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip,
+      </if>
+      <if test="ceshi != null">
+        ceshi,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="ceshi != null">
+        #{ceshi,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.AdminUser">
+    update le_admin_user
+    <set>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="ceshi != null">
+        ceshi = #{ceshi,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.AdminUser">
+    update le_admin_user
+    set group_id = #{groupId,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      ceshi = #{ceshi,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

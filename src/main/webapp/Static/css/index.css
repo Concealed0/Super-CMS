@@ -1,0 +1,58 @@
+/*公共样式*/
+.childrenBody{ padding:10px;}
+.layui-block{ width:100% !important;}
+/*登录*/
+.loginHtml,.loginBody{ height:100%;}
+.loginBody{ background-position:center;background-size:100% 100%}
+.loginBody form.layui-form{ padding:0 40px; width:400px; height:365px; position:absolute; left:50%; top:50%; margin:-150px 0 0 -200px; -webkit-box-sizing:border-box;-moz-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; background:#2D2D2D;-webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; box-shadow:0 0 50px #393d49;}
+.login_face{ margin:-55px auto 20px; width:100px; height:100px; -webkit-border-radius:50%; -moz-border-radius:50%; border-radius:50%; border:5px solid #fff; overflow:hidden;box-shadow:0 0 30px #009688;}
+.login_face img{ width:100%;}
+.loginBody .layui-form-item{ position:relative;}
+.loginBody .layui-form-item label{ position:absolute; color:#757575; left:15px; top:9px; line-height:20px; background:#fff; padding:0 5px; font-size:14px; cursor:text;}
+.loginBody .layui-form-item.layui-input-focus label{ top:-10px; font-size:12px; color:#ff6700;}
+.loginBody .layui-form-item.layui-input-active label{ top:-10px; font-size:12px;}
+.loginBody .layui-input::-webkit-input-placeholder{color:#fff;}
+.loginBody .layui-input::-moz-placeholder{color:#fff;}
+.loginBody .layui-input:-ms-input-placeholder{color:#fff;}
+.loginBody .layui-input::placeholder{color:#fff;}
+.loginBody .layui-form-item.layui-input-focus input{ border-color:#ff6700 !important;}
+.loginBody .layui-input-focus .layui-input::-webkit-input-placeholder{color:#757575;}
+.loginBody .layui-input-focus .layui-input::-moz-placeholder{color:#757575;}
+.loginBody .layui-input-focus .layui-input:-ms-input-placeholder{color:#757575;}
+.loginBody .layui-input-focus .layui-input::placeholder{color:#757575;}
+.loginBody .seraph{ font-size:30px; text-align:center;}
+.loginBody .seraph.icon-qq:hover{ color:#0288d1;}
+.loginBody .seraph.icon-wechat:hover{ color:#00d20d;}
+.loginBody .seraph.icon-sina:hover{ color:#d32f2f;}
+.imgCode{ position:relative;}
+#imgCode img{ position:absolute; top:1px; right:1px; cursor:pointer;}
+
+
+/*404页面*/
+.noFind{ text-align:center; padding-top:2%;}
+.noFind i{ line-height:1em; font-size:12em !important; color: #393D50; display:block;}
+.ufo{ text-align:center; height:100%; position:relative;}
+.noFind .page_icon,.noFind .ufo_icon{ opacity:1; position:absolute; left:50%; transform:translateX(-50%); -ms-transform:translateX(-50%); -moz-transform:translateX(-50%); -webkit-transform:translateX(-50%); -o-transform:translateX(-50%);}
+.noFind .page_icon{ top:300px; animation:pageGo 0.3s ease-in 0.3s forwards; -webkit-animation:pageGo 0.3s ease-in 0.3s forwards; -o-animation:pageGo 0.3s ease-in 0.3s forwards; -moz-animation:pageGo 0.3s ease-in 0.3s forwards;}
+.noFind .ufo_icon{ top:100px; animation:ufo 1s ease-in 0.6s forwards; -webkit-animation:ufo 1s ease-in 0.6s forwards; -o-animation:ufo 1s ease-in 0.6s forwards; -moz-animation:ufo 1s ease-in 0.6s forwards;}
+.page404{ margin-top:10%; opacity:0; font-size:0; animation:page404 0.5s ease-in 1.7s forwards; -webkit-animation:page404 0.5s ease-in 1.7s forwards; -o-animation:page404 0.5s ease-in 1.7s forwards; -moz-animation:page404 0.5s ease-in 1.7s forwards;}
+.page404 p{ font-size: 20px; font-weight: 300; color: #999;}
+/*页面被吸走*/
+@keyframes pageGo{from{font-size: 12em; top:300px;} to{font-size:0; opacity:0; top: 100px;}}
+@-moz-keyframes pageGo{from{font-size: 12em; top:300px;} to{font-size:0; opacity:0; top:100px}}
+@-webkit-keyframes pageGo{from{font-size: 12em; top:300px;} to{font-size:0; opacity:0; top:100px}}
+@-o-keyframes pageGo{from{font-size: 12em; top:300px;} to{font-size:0; opacity:0; top:100px}}
+/*ufo飞走*/
+@keyframes ufo{0%{font-size: 14em; top:100px;} 20%{font-size: 12em; top:50px;} 100%{font-size:0; opacity:0; top:-100px; left:80%;}}
+@-moz-keyframes ufo{0%{font-size: 14em; top:100px;} 20%{font-size: 12em;  top:50px;} 100%{font-size:0; opacity:0; top:-100px; left:80%;}}
+@-webkit-keyframes ufo{0%{font-size: 14em; top:100px;} 20%{font-size: 12em;  top:50px;} 100%{font-size:0; opacity:0; top:-100px; left:80%;}}
+@-o-keyframes ufo{0%{font-size: 14em; top:100px;} 20%{font-size: 12em; top:50px;} 100%{font-size:0; opacity:0; top:-100px; left:80%;}}
+/*404显示*/
+@keyframes page404{from{opacity:0; font-size:2em;} to{opacity:1;font-size:2em;}}
+@-moz-keyframes page404{from{opacity:0; font-size:2em;} to{opacity:1;font-size:2em;}}
+@-webkit-keyframes page404{from{opacity:0; font-size:2em;} to{opacity:1;font-size:2em;}}
+@-o-keyframes page404{from{opacity:0; font-size:2em;} to{opacity:1;font-size:2em;}}
+
+
+
+
