@@ -119,13 +119,13 @@
 			<artifactId>slf4j-nop</artifactId>
 			<version>1.6.4</version>
 		</dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <!-- 默认的版本为3.8.1，修改为4.x,因为3.x使用的为编程的方式，4.x为注解的形式。 -->
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<!-- 默认的版本为3.8.1，修改为4.x,因为3.x使用的为编程的方式，4.x为注解的形式。 -->
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!--Fastjson是一个Java语言编写的高性能功能完善的JSON库。它采用一种“假定有序快速匹配”的算法，把JSON Parse的性能提升到极致，是目前Java语言中最快的JSON库。Fastjson接口简单易用， 
 			已经被广泛使用在缓存序列化、协议交互、Web输出、Android客户端等多种应用场景 -->
@@ -175,7 +175,24 @@
 			<version>1.4.9</version>
 			<scope>compile</scope>
 		</dependency>
-
+		<!-- ***java 获取系统内存、CPU、磁盘****** -->
+		<dependency>
+			<groupId>com.github.oshi</groupId>
+			<artifactId>oshi-core</artifactId>
+			<version>3.12.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>5.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>5.2.0</version>
+		</dependency>
+		<!-- cpu -->
+		
 		<!-- jedis依赖 开始整合redis缓存 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -194,7 +211,7 @@
 			<artifactId>spring-data-redis</artifactId>
 			<version>1.8.1.RELEASE</version>
 		</dependency>
-	
+
 		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-redis</artifactId> 
 			<version>1.8.1.RELEASE</version> </dependency> <dependency> <groupId>org.springframework.data</groupId> 
 			<artifactId>spring-data-redis</artifactId> <version>1.6.1.RELEASE</version> 

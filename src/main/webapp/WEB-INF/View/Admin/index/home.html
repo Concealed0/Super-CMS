@@ -29,8 +29,8 @@
                     <div class="symbol bgcolor-blue"> <i class="iconfont">&#xe74d;</i>
                     </div>
                     <div class="value">
-                            <h1 id="lepkw">150</h1>
-                            <span>董小松</span>
+                            <h1 id="cpu">--</h1>
+                            <span>CPU核数</span>
                     </div>
                 </section>
             </div>
@@ -38,8 +38,8 @@
                 <section class="panel">
                     <div class="symbol bgcolor-commred"> <i class="iconfont">&#xe74d;</i></div>
                     <div class="value">
-                            <h1 id="lepks">150</h1>
-                            <span>董小松</span>
+                            <h1 id="maxjvm">--</h1>
+                            <span>最大JVM</span>
 
                     </div>
                 </section>
@@ -50,8 +50,8 @@
                     <div class="symbol bgcolor-dark-green"> <i class="iconfont">&#xe74d;</i>
                     </div>
                     <div class="value">
-                            <h1 id="lepgz">150</h1>
-                            <span>董小松</span>
+                            <h1 id="initjvm">--</h1>
+                            <span>初始JVM</span>
                     </div>
                 </section>
             </div>
@@ -60,8 +60,8 @@
                 <section class="panel">
                     <div class="symbol bgcolor-yellow-green"> <i class="iconfont">&#xe74d;</i></div>
                     <div class="value">
-                            <h1 id="lepfx">150</h1>
-                            <span>董小松</span>
+                            <h1 id="usedjvm">--</h1>
+                            <span>可用JVM</span>
                     </div>
                 </section>
             </div>
@@ -72,8 +72,18 @@
                     <div class="symbol" style="background: #0000CC"> <i class="iconfont">&#xe74d;</i>
                     </div>
                     <div class="value">
-                            <h1 id="lepyl">150</h1>
-                            <span>董小松</span>
+                            <h1 id="total">--</h1>
+                            <span>线程数</span>
+                    </div>
+                </section>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <section class="panel">
+                    <div class="symbol" style="background: #0000CC"> <i class="iconfont">&#xe74d;</i>
+                    </div>
+                    <div class="value">
+                            <h1 id="osname">--</h1>
+                            <span>系统</span>
                     </div>
                 </section>
             </div>
@@ -112,6 +122,9 @@
 
     </div>
 
+   <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+     <div style="height:200px;width:100%;margin:0 auto" id="ledown" background-color="red"></div> 
+     
     <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
         <button data-method="notice" class="layui-btn">示范一个公告层</button>
     </div>
@@ -144,4 +157,47 @@
     })
 </script>
 
+<script>
+
+    layui.use(['main', 'le','echart','showmain','ledown']);
+</script>
+
+<script>
+    layui.use('layer', function () { //独立版的layer无需执行这一句
+        var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+        //触发事件
+        var active = {
+            notice: function () {
+                //示范一个公告层
+                layer.open({
+                    type: 1
+                    , title: false //不显示标题栏
+                    , closeBtn: false
+                    , area: '300px;'
+                    , shade: 0.8
+                    , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    , btn: ['火速围观', '残忍拒绝']
+                    , btnAlign: 'c'
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br>layer只是作为Layui的一个弹层模块，由于其用户基数较大，所以常常会有人以为layui是layerui<br><br>layer虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级。<br><br>我们此后的征途是星辰大海 ^_^</div>'
+                    , success: function (layero) {
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').attr({
+                            href: 'http://www.layui.com/'
+                            , target: '_blank'
+                        });
+                    }
+                });
+            }
+
+        };
+
+        $('#layerDemo .layui-btn').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+    });
+</script>
 </html>

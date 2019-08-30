@@ -9,113 +9,185 @@
  * +----------------------------------------------------------------------
  */
 //模块依赖其它模块，如：layui.define('layer', callback) 该模板依赖echarts 该名称在全局变量config中有引用 
-layui.define(['echarts'], function (exports) {
-    var echarts = layui.echarts,
-        $ = layui.jquery;
-        
-    var fs=[];       //ph
-    var tim = [];         //时间
+layui.define([ 'echarts' ], function(exports) {
+	var echarts = layui.echarts, $ = layui.jquery;
 
-    var myecharts = echarts.init(document.getElementById('echarts'));
-    var option = {
-        title: {
-            text: '动态二氧化碳数据',
-            subtext: '纯属虚构'
-        },
-        tooltip : {
-            trigger: 'axis'
-        },
-        xAxis: {
+	var cSys = []; //cpu系统使用率
+	var user=[];   //cpu用户使用率
+	var iotwait=[];//cpu当前等待率
+	var idle=[];   //cpu当前空闲率
+	var tim = []; // 时间
+
+	var myecharts = echarts.init(document.getElementById('echarts'));
+	var option = {
+		title : {
+			text : '动态系统CPU监测信息',
+			subtext : ''
+		},
+		tooltip : {
+			trigger : 'axis'
+		},
+	    legend: {
+	        data:['系统使用率','用户使用率','当前等待率','当前空闲率'],
+	        left:'right'
+	    },
+		 color: ['#FF4949','#FFA74D','#FFEA51','#4BF0FF'],
+		xAxis : {
             type: 'category',
-            data: []
+            boundaryGap: false,
+            data: [],
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#000'
+                }
+            }
+        },   
+		yAxis : [{
+            type : 'value',
+            name : '系统/用户/%',
+            splitLine: {
+               show: false
+           },
+            axisLine : {
+                lineStyle: {
+                   color: '#000'
+               }
+            }
         },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            name: '二氧化碳',
-            type: 'line',
-            symbol: 'emptycircle',    //设置折线图中表示每个坐标点的符号；emptycircle：空心圆；emptyrect：空心矩形；circle：实心圆；emptydiamond：菱形       
-            data: []
-        }]
-    };
+        {
+           //第二个（右边）Y轴，yAxisIndex为1
+            type : 'value',
+            name : '等待/空闲/%',
+            splitLine: {
+               show: false
+           },
+           axisLine : {
+                lineStyle: {
+                   color: '#000'
+               }
+            }
+        }],
+		series : [ {
+			name : '系统使用率',
+			type : 'line',
+			symbol : 'emptycircle', // 设置折线图中表示每个坐标点的符号；emptycircle：空心圆；emptyrect：空心矩形；circle：实心圆；emptydiamond：菱形
+			data : []
+		},{
+			name : '用户使用率',
+			type : 'line',
+			symbol : 'emptyrect', // 设置折线图中表示每个坐标点的符号；emptycircle：空心圆；emptyrect：空心矩形；circle：实心圆；emptydiamond：菱形
+			data : []
+		},{
+			name : '当前等待率',
+			type : 'line',
+		//	yAxisIndex: 1,
+			symbol : 'circle', // 设置折线图中表示每个坐标点的符号；emptycircle：空心圆；emptyrect：空心矩形；circle：实心圆；emptydiamond：菱形
+			data : []
+		},{
+			name : '当前空闲率',
+			type : 'line',
+			//yAxisIndex: 1,
+			symbol : 'emptydiamond', // 设置折线图中表示每个坐标点的符号；emptycircle：空心圆；emptyrect：空心矩形；circle：实心圆；emptydiamond：菱形
+			data : []
+		}, ]
+	};
 
-    $.ajax({
-                type: 'post',
-                async : true, 
-                url: '/admin/wisdom/leer',  //数据传输的控制器方法
-                success: function (result) {
-                    var myDate = new Date();//获取系统当前时间
-                    console.log("二氧化碳时间测试"+myDate);
-                    if (result != 1  && result.length > 0) {
-                        //判断data数据
-                            for (var j = 0; j < result.length; j++) {
-                                fs.push(result[j].value);
-                                tim.push(result[j].timestamp);
-                            }
-                    }
-                    else {
-                        console.log("二氧化碳数据取出失败！");
-                    }
-                    myecharts.hideLoading();//隐藏加载动画
-                    myecharts.setOption({
-                        xAxis: {
-                            data: tim
-                        },
-                        series: [
-                            {
-                                name: '二氧化碳',
-                                data: fs
-                            }]
-                    });
-                    console.log("二氧化碳数组长度"+fs.length);
-                    console.log("二氧化碳数组：：");
-                    console.log(fs);
-                },
-               
-                error: function () {
-                    alert("二氧化碳数据加载失败！");
-                    myecharts.hideLoading();
-                }
-            });
-            window.setInterval(function(){$.ajax({
-                type: 'post',
-                async : true, 
-                url: '/admin/wisdom/index',  //数据传输的控制器方法
-                success: function (result) {
-                    var myDate = new Date();//获取系统当前时间
-                    console.log("二氧化碳图标时间测试"+myDate);
-                    if (result != 1  && result.length > 0) {
-                        //判断data数据
-                            for (var j = 0; j < result.length; j++) {
-                                fs.push(result[j].value);
-                                tim.push(result[j].timestamp);
-                            }
-                    }
-                    else {
-                        console.log("二氧化碳图标数据取出失败！");
-                    }
-                    myecharts.hideLoading();//隐藏加载动画
-                    myecharts.setOption({
-                        xAxis: {
-                            data: tim
-                        },
-                        series: [
-                            {
-                                name: '二氧化碳',
-                                data: fs
-                            }]
-                    });
-                    console.log("二氧化碳数组长度"+fs.length);
-                    console.log("二氧化碳数组：：");
-                    console.log(fs);
-                },
-               
-                error: function () {
-                    alert("二氧化碳数据加载失败！");
-                    myecharts.hideLoading();
-                }
-            }) },55000);
-    myecharts.setOption(option);
-    exports('echart', {});
+	$.ajax({
+		type : 'post',
+		async : true,
+		url : '/SuperCMS/SystemMonitor/SystemCpu', // 数据传输的控制器方法
+		success : function(result) {
+			var myDate = new Date();// 获取系统当前时间
+			console.log("cpu测试" + myDate);
+			console.log(result.cSys);
+			if (result != null) {
+				// 判断data数据				
+				cSys.push(result.cSys);
+				user.push(result.user);
+				iotwait.push(result.iotwait);
+				idle.push(result.idle);
+				tim.push(result.tem);
+			} else {
+				console.log("系统CPU echarts图数据获取失败");
+			}
+			myecharts.hideLoading();// 隐藏加载动画
+			myecharts.setOption({
+				xAxis : {
+					data : tim
+				},
+				series : [ {
+					name : '系统使用率',
+					data : cSys
+				},{
+					name : '用户使用率',
+					data : user
+				},{
+					name : '当前等待率',
+					data : iotwait
+				},{
+					name : '当前空闲率',
+					data : idle
+				} ]
+			});
+			console.log(result);
+		},
+
+		error : function() {
+			alert("系统CPU echarts图数据获取失败,请查看接口！");
+			myecharts.hideLoading();
+		}
+	});
+	window.setInterval(function() {
+		$.ajax({
+			type : 'post',
+			async : true,
+			url : '/SuperCMS/SystemMonitor/SystemCpu', // 数据传输的控制器方法
+			success : function(result) {
+				var myDate = new Date();// 获取系统当前时间
+				console.log("cpu测试" + myDate);
+				console.log(result.cSys);
+				console.log(result.length);
+				if (result != null) {
+					// 判断data数据				
+					cSys.push(result.cSys);
+					user.push(result.user);
+					iotwait.push(result.iotwait);
+					idle.push(result.idle);
+					tim.push(result.tem);
+				} else {
+					console.log("系统CPU echarts图数据获取失败");
+				}
+				myecharts.hideLoading();// 隐藏加载动画
+				myecharts.setOption({
+					xAxis : {
+						data : tim
+					},
+					series : [ {
+						name : '系统使用率',
+						data : cSys
+					},{
+						name : '用户使用率',
+						data : user
+					},{
+						name : '当前等待率',
+						data : iotwait
+					},{
+						name : '当前空闲率',
+						data : idle
+					} ]
+				});
+				console.log(result);
+			},
+
+			error : function() {
+				alert("系统CPU echarts图数据获取失败,请查看接口！");
+				myecharts.hideLoading();
+			}
+		});
+	}, 20000);
+	myecharts.setOption(option);
+	exports('echart', {});
 });
