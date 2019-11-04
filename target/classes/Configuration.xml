@@ -69,20 +69,17 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.test.mybatis" targetProject="./src/test/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
- 
- 
         <!-- 列出要生成代码的所有表，这里配置的是不生成Example文件 -->
         <!--
             tableName:数据库中的表名，
             domainObjectName:取得文件类名
             catalog属性：数据库名
         -->
-        <table tableName="le_admin_group" domainObjectName="AdminGroup" catalog="supercms"
+        <table tableName="le_category" domainObjectName="Category" catalog="supercms"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false" >
             <property name="ignoreQualifiersAtRuntime" value="true"/>
             <property name="useActualColumnNames" value="false"/>
         </table>
- 
     </context>
 </generatorConfiguration>

@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -25,11 +26,37 @@ import com.alibaba.fastjson.JSON;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 
 public class SuperCommon {
 
 	private static Logger logger = Logger.getLogger(SuperCommon.class);
+	
+	/* //时间戳转换日期 */
+	public String stampToTime(Long stamp) {
+		String sd = "";
+		Date date = new Date(stamp);//新建一个时间对象
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//你要转换成的时间格式,大小写不要变
+		sd = sdf.format(date); // 时间戳转换日期
+		return sd;
+		}
+
+	  /* //日期转换为时间戳 */
+	 public long timeToStamp(String timers) {
+		 Date d = new Date();
+		 long timeStemp = 0;
+		 try {
+			 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+			 d = sf.parse(timers);// 日期转换为时间戳
+			 } catch (ParseException e) {
+				 // TODO Auto-generated catch block
+				 e.printStackTrace();
+				 }
+		 timeStemp = d.getTime();
+		 return timeStemp;
+		 }
 	
 	/**
 	 * 将字符串的编码格式转换为utf-8
@@ -107,8 +134,8 @@ public class SuperCommon {
 	
 	
 	
-	
-	public static String SuperJson(List<?> list,String res){
+	//标准返回数组
+	public String SuperJson(List<?> list,String res){
 		Map<String, Object> datatwo = new HashMap<String, Object>();
 		if(list!=null) {
 			datatwo.put("data", list);
@@ -127,6 +154,26 @@ public class SuperCommon {
 		}
 		
 	}
+	//标准返回数组
+		public String SuperJsonMap(Map<String,Object> map,String res){
+			Map<String, Object> datatwo = new HashMap<String, Object>();
+			if(map!=null) {
+				datatwo.put("data", map);
+				datatwo.put("status", 200);
+				datatwo.put("msg","true");
+				datatwo.put("res",res);
+				datatwo.put("name","ange");
+				return JSON.toJSONString(datatwo);
+			}else {
+				datatwo.put("data", map);
+				datatwo.put("status", 400);
+				datatwo.put("msg","flase");
+				datatwo.put("res",res);
+				datatwo.put("name","ange");
+				return JSON.toJSONString(datatwo);
+			}
+			
+		}
 	   
     /**   
     * @Function: SuperCommon.java
@@ -162,7 +209,7 @@ public class SuperCommon {
     * @author: dongsong
     * @date: 2019年6月16日 下午10:01:03 
     */
-    public static String getFieldValueListByName(List<?> o, Class<?> c, String field) {
+    public String getFieldValueListByName(List<?> o, Class<?> c, String field) {
         StringBuffer result = new StringBuffer();
         if (StringUtils.isNoneBlank(field)) {
             Field[] fields = c.getDeclaredFields();

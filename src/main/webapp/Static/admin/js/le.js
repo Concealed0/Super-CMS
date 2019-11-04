@@ -23,7 +23,7 @@ layui.define('echarts', function(exports) {
 		},
 	    legend: {
 	        data:['内存使用率','当前空闲率'],
-	        left:'right'
+	        bottom:'bottom'
 	    },
 		color: ['#FF4949','#FFA74D']
 		,

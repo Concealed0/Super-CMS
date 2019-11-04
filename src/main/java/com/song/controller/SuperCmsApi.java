@@ -12,8 +12,9 @@ package com.song.controller;
 
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +32,13 @@ import com.song.common.StrUtil;
 import com.song.common.SuperCommon;
 import com.song.model.AdminMenu;
 import com.song.model.AdminUser;
+import com.song.model.Category;
+import com.song.model.Content;
 import com.song.service.AdminMenuService;
 import com.song.service.AdminUserService;
+import com.song.service.ArticleService;
 import com.song.service.SuperApiService;
+import com.song.service.impl.ArticleServiceImpl;
 
 /**   
 * Copyright: Copyright (c) 2019 LanRu-Caifu
@@ -54,7 +59,7 @@ import com.song.service.SuperApiService;
 @RequestMapping("/SuperApi")
 public class SuperCmsApi {
 
-	SuperCommon superJson=new SuperCommon();
+	SuperCommon superCom=new SuperCommon();
 	public Integer apiid=null;
 	public String apiname;
 	@Autowired
@@ -64,6 +69,9 @@ public class SuperCmsApi {
 	@Autowired
 	AdminMenuService menuservice;
 
+	@Autowired
+	ArticleService artser;
+	
 	@ResponseBody
 	@RequestMapping(value="/icon",produces = "application/json;charset=UTF-8")
 	public String icon() {
@@ -81,7 +89,7 @@ public class SuperCmsApi {
 		System.out.println("这是更改用户菜单的status状态"+table+"-------"+id_name+"-------"+id_value+"-------"+field+"-------"+field_value);
 		int value;
 		if (id_value==null){
-			return superJson.ajaxReturn(0,"参数不足","");
+			return superCom.ajaxReturn(0,"参数不足","");
         }
 		if (field_value.equals("false")){
 			value=0;
@@ -92,9 +100,9 @@ public class SuperCmsApi {
 			if(field.equals("status")){
 				int menu=superapi.updatamenuapi(id_value, value);
 				if(menu==1) {
-					return superJson.ajaxReturn(200,"操作成功","");
+					return superCom.ajaxReturn(200,"操作成功","");
 				}else
-					return superJson.ajaxReturn(0,"操作失败","");
+					return superCom.ajaxReturn(0,"操作失败","");
 			}else if(field.equals("sort")) {
 				//创建一个存放id的上级变量
 				int upid;
@@ -111,7 +119,7 @@ public class SuperCmsApi {
 					upid=(id_value/1000)*1000;
                 }else {     
                 	System.out.println("更改菜单排序失败");	
-         			return superJson.ajaxReturn(0,"更改菜单排序失败","/SuperCMS/AdminMenuCon/adminindex");	
+         			return superCom.ajaxReturn(0,"更改菜单排序失败","/SuperCMS/AdminMenuCon/adminindex");	
                 }
 				System.out.println("获取到的上级菜单"+upid);	  	
 				//创建一个实体型，通过setPid值查找所有的实体
@@ -126,7 +134,7 @@ public class SuperCmsApi {
 				if(findallbyid.size()==0||findallbyid==null) {
 					allsort="-1";
 				}else {
-					allsort=SuperCommon.getFieldValueListByName(findallbyid,AdminMenu.class,"sort");
+					allsort=superCom.getFieldValueListByName(findallbyid,AdminMenu.class,"sort");
 				}
 				  	
 				//将得到的字符串转换为数组对象
@@ -145,23 +153,29 @@ public class SuperCmsApi {
 					//插入排序的值，进行更新，sort值为id_value
 					int sort=superapi.updatamenusort(id_value,Integer.parseInt(field_value));
 					if(sort==1) {
-						return superJson.ajaxReturn(200,"操作成功","");
+						return superCom.ajaxReturn(200,"操作成功","");
 					}else
-						return superJson.ajaxReturn(0,"操作失败","");
+						return superCom.ajaxReturn(0,"操作失败","");
 				}else
-         			return superJson.ajaxReturn(0,"排序输入菜单失败，输入排序重复","/SuperCMS/AdminMenuCon/adminindex");	
+         			return superCom.ajaxReturn(0,"排序输入菜单失败，输入排序重复","/SuperCMS/AdminMenuCon/adminindex");	
 				
 			}else
-				return superJson.ajaxReturn(0,"更改状态时发生未知错误","");
+				return superCom.ajaxReturn(0,"更改状态时发生未知错误","");
 				
 	    case "le_admin_user":
 			int user=userservice.updatapowerapi(id_value, value);
 			if(user==1) {
-				return superJson.ajaxReturn(200,"操作成功","");
+				return superCom.ajaxReturn(200,"操作成功","");
 			}else
-				return superJson.ajaxReturn(0,"操作失败","");
+				return superCom.ajaxReturn(0,"操作失败","");
+	    case "le_content":
+	    	int stat=artser.selectStatus(id_value, value);
+			if(stat==1) {
+				return superCom.ajaxReturn(200,"操作成功","");
+			}else
+				return superCom.ajaxReturn(0,"操作失败",""); 
 		default :
-			return superJson.ajaxReturn(0,"更改状态时发生未知错误","");
+			return superCom.ajaxReturn(0,"更改状态时发生未知错误","/SuperCMS/SuperApi/menustatus");
 		}
 	}
 	//删除单个菜单
@@ -172,21 +186,21 @@ public class SuperCmsApi {
 			HttpServletRequest request, HttpSession session) throws JsonProcessingException, IllegalArgumentException, IllegalAccessException {
 		System.out.println("-------"+id+"-------"+name);
 		if(id==null&&name==null) {
-			return superJson.ajaxReturn(0,"参数不能为空","");
+			return superCom.ajaxReturn(0,"参数不能为空","");
 		}
 		switch(name) {
 		case "adminmenu":
 			if(superapi.deladminmenu(id)==1)
-				return superJson.ajaxReturn(200,"菜单删除成功","");
+				return superCom.ajaxReturn(200,"菜单删除成功","");
 			else
-				return superJson.ajaxReturn(0,"菜单删除失败","");	
+				return superCom.ajaxReturn(0,"菜单删除失败","");	
 		case "usermenu":
 			if(superapi.delusermenu(id)==1)
-				return superJson.ajaxReturn(200,"用户删除成功","");
+				return superCom.ajaxReturn(200,"用户删除成功","");
 			else
-				return superJson.ajaxReturn(0,"用户删除失败","");			
+				return superCom.ajaxReturn(0,"用户删除失败","");			
 		default :
-			return superJson.ajaxReturn(0,"无法执行该操作","");		
+			return superCom.ajaxReturn(0,"无法执行该操作","");		
 		}
 		
 	}
@@ -206,9 +220,11 @@ public class SuperCmsApi {
 				return "Admin/power/poweruserinfo";
 			case "adminmenu":
 				return "Admin/admin_menu/indexinfo";
+			case "contentarticle":
+				return "Admin/admin_article/indexinfo";
 			default :
 				String a="apiid:::"+apiid+"apiname::"+apiname;
-				return superJson.ajaxReturn(0,"这是一个错误的跳转页面，错误的跳转信息为"+a,"");
+				return superCom.ajaxReturn(0,"这是一个错误的跳转页面，错误的跳转信息为"+a,"");
 			}
 		}else {
 			apiid=null;
@@ -218,9 +234,11 @@ public class SuperCmsApi {
 				return "Admin/power/poweruserinfo";
 			case "adminmenu":
 				return "Admin/admin_menu/indexinfo";
+			case "contentarticle":
+				return "Admin/admin_article/indexinfo";
 			default :
 				String a="apiid:::"+apiid+"apiname::"+apiname;
-				return superJson.ajaxReturn(0,"这是一个错误的跳转页面，错误的跳转信息为"+a,"");
+				return superCom.ajaxReturn(0,"这是一个错误的跳转页面，错误的跳转信息为"+a,"");
 			}
 		}
 	}
@@ -231,28 +249,28 @@ public class SuperCmsApi {
 		System.out.println("这是先获取的编辑的id与姓名-------"+apiid+"------"+apiname);
 		//先判断id是否已经获取到
 		if(apiid==null) {
-			return superJson.ajaxReturn(0,"超级权限编辑用户，获取id失败","");
+			return superCom.ajaxReturn(0,"超级权限编辑用户，获取id失败","");
 		}else {
 			switch(apiname) {
 			case "hello":
 				apiid=null;
 				apiname="hello";
-				return superJson.ajaxReturn(0,"超级权限编辑用户，获取name失败","");
+				return superCom.ajaxReturn(0,"超级权限编辑用户，获取name失败","");
 			case "usermenu":
 				List<AdminUser> adminuser =userservice.usergroup(apiid);
 				apiid=null;
 				apiname="hello";
-				return SuperCommon.SuperJson(adminuser,"超级权限中的账号编辑部分");
+				return superCom.SuperJson(adminuser,"超级权限中的账号编辑部分");
 			case "adminmenu":
 				List<AdminMenu> adminmenu =menuservice.supermenuoneapi(apiid);
 				apiid=null;
 				apiname="hello";
-				return SuperCommon.SuperJson(adminmenu,"超级权限中的账号编辑部分");
+				return superCom.SuperJson(adminmenu,"超级权限中的账号编辑部分");
 			default :
 				apiid=null;
 				apiname="hello";
 				System.out.println("判断完menuinfodata后其值-------"+apiid+"------"+apiname);
-				return superJson.ajaxReturn(0,"超级权限编辑，获取menuid失败","");
+				return superCom.ajaxReturn(0,"超级权限编辑，获取menuid失败","");
 			}
 		}
 		
@@ -269,7 +287,7 @@ public class SuperCmsApi {
 				@RequestParam(defaultValue="") Integer id) {
 			System.out.println(pid+"-------"+name+"-------"+url+"-------"+iconfont+"-------"+status+"-------"+id);
 			if(pid==null&&status==null) {
-				return superJson.ajaxReturn(0,"更改菜单失败，所填值不允许为空！","/SuperCMS/AdminMenuCon/adminindex");	
+				return superCom.ajaxReturn(0,"更改菜单失败，所填值不允许为空！","/SuperCMS/AdminMenuCon/adminindex");	
 			}
 			if(status==2) {
 				status=0;
@@ -284,13 +302,13 @@ public class SuperCmsApi {
 			    adminmenu.setId(id);	
 			    int aa=menuservice.superupdata(adminmenu);
 				System.out.println(aa);
-				return superJson.ajaxReturn(200,"更改菜单成功","/SuperCMS/AdminMenuCon/adminindex");						
+				return superCom.ajaxReturn(200,"更改菜单成功","/SuperCMS/AdminMenuCon/adminindex");						
 			}
 			//判断出传入id为0，证明传入数据为最新编辑数据
 			else {	
 				if(pid%10!=0) {
 					System.out.println("00000000");
-					return superJson.ajaxReturn(0,"更改菜单失败，只允许创建三级目录！","/SuperCMS/AdminMenuCon/adminindex");	
+					return superCom.ajaxReturn(0,"更改菜单失败，只允许创建三级目录！","/SuperCMS/AdminMenuCon/adminindex");	
 				}
 				String[] differ=new String[9];
 				AdminMenu allid=new AdminMenu(); 
@@ -311,7 +329,7 @@ public class SuperCmsApi {
 				if(aid.size()==0||aid==null) {
 					aidd="-1";
 				}else {
-					aidd=SuperCommon.getFieldValueListByName(aid,AdminMenu.class,"id");
+					aidd=superCom.getFieldValueListByName(aid,AdminMenu.class,"id");
 				}
 				System.out.println(aidd);
 				//将得到的字符串转换为数组对象
@@ -340,7 +358,7 @@ public class SuperCmsApi {
                 	}
                 }else {     
                 	System.out.println("************");	
-         			return superJson.ajaxReturn(0,"更改菜单失败","/SuperCMS/AdminMenuCon/adminindex");	
+         			return superCom.ajaxReturn(0,"更改菜单失败","/SuperCMS/AdminMenuCon/adminindex");	
                 }
 				System.out.println("随机产生的数组值");
             	System.out.println(differid);
@@ -370,15 +388,42 @@ public class SuperCmsApi {
             		int aa=menuservice.superinsert(adminmenu);
      				System.out.println("将这个新建的表插入到数据库,返回值"+aa);
      				if(aa==1) {
-     					return superJson.ajaxReturn(200,"更改菜单成功","/SuperCMS/AdminMenuCon/adminindex");
+     					return superCom.ajaxReturn(200,"更改菜单成功","/SuperCMS/AdminMenuCon/adminindex");
      				}else
-     					return superJson.ajaxReturn(0,"更改菜单失败","/SuperCMS/AdminMenuCon/adminindex"); 	
+     					return superCom.ajaxReturn(0,"更改菜单失败","/SuperCMS/AdminMenuCon/adminindex"); 	
             	}else {
-     				return superJson.ajaxReturn(0,"更改菜单失败，同一级目录只允许建立十个！","/SuperCMS/AdminMenuCon/adminindex");	
+     				return superCom.ajaxReturn(0,"更改菜单失败，同一级目录只允许建立十个！","/SuperCMS/AdminMenuCon/adminindex");	
             	}
 				
 			}
 		}	
+		
+		
+		@Autowired
+		ArticleServiceImpl articleService;
+		//获取到文章content-content_article编辑信息
+		@ResponseBody
+		@RequestMapping(value="artinfo",produces="application/json;charset=UTF-8")
+		public String artinfo() {
+			
+			System.out.println("文章后台classId值------------------------"+apiid);
+			//id="148";
+			Integer contentId;
+			if(apiid!=null) {
+				contentId=Integer.valueOf(apiid);
+			}else {
+				return superCom.ajaxReturn(400, "传入后台id为空", "index");
+			}
+			
+			//获取content_article与content一对一数据接口
+			Content infocon=articleService.selectInfo(contentId);
+			List<Category> infocate=articleService.selectByCate(null);
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("infocon", infocon);
+			data.put("infocate",infocate);
+			return superCom.SuperJsonMap(data,"返回所有文章接口");
+		}
+		
 		
 		//比较两个数组的不同之处
 		//b为随机的数组  a为子菜单数组

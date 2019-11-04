@@ -585,7 +585,7 @@ layui.define(['jquery', 'tags', 'layedit', 'laydate' , 'jqform', 'upload', 'webu
             url: '/php/upload.php'
         }
     });
-    var editIndex = layedit.build('content');
+    var editIndex = layedit.build('content_myform');
 
 
     exports('myform', {});

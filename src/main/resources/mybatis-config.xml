@@ -20,5 +20,8 @@
         <mapper resource="com/song/mapping/AdminLogMapper.xml" />
         <mapper resource="com/song/mapping/AdminGroupMapper.xml" />
         <mapper resource="com/song/mapping/UserGroupMapper.xml" />
+        <mapper resource="com/song/mapping/ContentArticleMapper.xml" />
+        <mapper resource="com/song/mapping/ContentMapper.xml" />
+        <mapper resource="com/song/mapping/CategoryMapper.xml" />
     </mappers>
 </configuration> 

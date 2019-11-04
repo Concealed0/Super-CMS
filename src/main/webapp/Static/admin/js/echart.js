@@ -29,7 +29,7 @@ layui.define([ 'echarts' ], function(exports) {
 		},
 	    legend: {
 	        data:['系统使用率','用户使用率','当前等待率','当前空闲率'],
-	        left:'right'
+	        bottom:'bottom'
 	    },
 		 color: ['#FF4949','#FFA74D','#FFEA51','#4BF0FF'],
 		xAxis : {
@@ -149,7 +149,7 @@ layui.define([ 'echarts' ], function(exports) {
 				var myDate = new Date();// 获取系统当前时间
 				console.log("cpu测试" + myDate);
 				console.log(result.cSys);
-				console.log(result.length);
+				//console.log(result.length);
 				if (result != null) {
 					// 判断data数据				
 					cSys.push(result.cSys);

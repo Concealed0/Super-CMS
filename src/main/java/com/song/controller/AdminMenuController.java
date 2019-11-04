@@ -52,6 +52,8 @@ public class AdminMenuController{
 	// @Fields allmenu : TODO
     //public int a=0 ;
 	
+	SuperCommon superCom=new SuperCommon();
+	
 	@Autowired
 	AdminMenuService adminmenuservice;
 	
@@ -83,7 +85,7 @@ public class AdminMenuController{
 		//遍历多叉树，roottree 为多叉树的根节点，这个函数将根节点遍历给全局变量allmenu对象数组中
 		DFStraverse(roottree,menuallapi);
 		if(menuallapi.size()==0) {
-			return SuperCommon.SuperJson(menuallapi,"超级权限中的菜单管理出错！");
+			return superCom.SuperJson(menuallapi,"超级权限中的菜单管理出错！");
 		}
 		System.out.println(JSON.toJSONString(menuallapi));
 		return JSON.toJSONString(menuallapi);
@@ -108,7 +110,7 @@ public class AdminMenuController{
 		//遍历多叉树，roottree 为多叉树的根节点，这个函数将根节点遍历给全局变量allmenu对象数组中
 		DFStraverse(roottree,menuallapi);
 		if(menuallapi.size()==0) {
-			return SuperCommon.SuperJson(menuallapi,"超级权限中的菜单管理出错！");
+			return superCom.SuperJson(menuallapi,"超级权限中的菜单管理出错！");
 		}
 		System.out.println(JSON.toJSONString(menuallapi));
 		return JSON.toJSONString(menuallapi);
@@ -178,7 +180,7 @@ public class AdminMenuController{
 		//遍历多叉树，roottree 为多叉树的根节点，这个函数将根节点遍历给全局变量allmenu对象数组中
 		DFStraverse(roottree,menuallapi);
 		if(menuallapi.size()==0) {
-			return SuperCommon.SuperJson(menuallapi,"超级权限中的菜单管理出错！");
+			return superCom.SuperJson(menuallapi,"超级权限中的菜单管理出错！");
 		}
 		System.out.println(JSON.toJSONString(menuallapi));
 		return JSON.toJSONString(menuallapi);

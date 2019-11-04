@@ -48,7 +48,7 @@ public class PowerController {
 	
 	public int userid=0;
 	
-	SuperCommon superJson=new SuperCommon();
+	SuperCommon superCom=new SuperCommon();
 	@Autowired
 	AdminLogService logservice;
 	@Autowired
@@ -77,7 +77,7 @@ public class PowerController {
 	@ResponseBody
 	public String index() {
 		List<AdminLog> adminlog=logservice.selectall();
-		return SuperCommon.SuperJson(adminlog,"超级权限中的日志部分");
+		return superCom.SuperJson(adminlog,"超级权限中的日志部分");
 	}
 	
 	
@@ -85,14 +85,14 @@ public class PowerController {
 	@ResponseBody
 	public String poweruser() {
 		List<AdminUser> adminuser =userservice.selectpowerAll();
-		return SuperCommon.SuperJson(adminuser,"超级权限中的账号管理部分");
+		return superCom.SuperJson(adminuser,"超级权限中的账号管理部分");
 	}
 	//测试连表查询，user+group表中的所有值
 	@RequestMapping(value="/powerusergroup",produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String powerusergroup() {
 		List<AdminUser> adminuser =userservice.selecttwo();
-		return SuperCommon.SuperJson(adminuser,"超级权限中的账号管理部分");
+		return superCom.SuperJson(adminuser,"超级权限中的账号管理部分");
 	}
 	
 	@ResponseBody
@@ -105,7 +105,7 @@ public class PowerController {
 		System.out.println(table+"-------"+id_name+"-------"+id_value+"-------"+field+"-------"+field_value);
 		int status;
 		if (id_value==00){
-			return superJson.ajaxReturn(0,"参数不足","");
+			return superCom.ajaxReturn(0,"参数不足","");
         }
 		if (!field_value.equals("false")){
 			status=1;
@@ -113,9 +113,9 @@ public class PowerController {
         	status = 0;		
 		int api=userservice.updatapowerapi(id_value, status);
 		if(api==1) {
-			return superJson.ajaxReturn(200,"操作成功","");
+			return superCom.ajaxReturn(200,"操作成功","");
 		}else
-			return superJson.ajaxReturn(0,"操作失败","");
+			return superCom.ajaxReturn(0,"操作失败","");
 	}
 	@ResponseBody
 	@RequestMapping(value="/powerdel",produces = "application/json;charset=UTF-8")
@@ -124,15 +124,15 @@ public class PowerController {
 		System.out.println("-------"+id+"-------");
 		switch(id) {
 		case 10:
-			return superJson.ajaxReturn(0,"参数不能为空","");
+			return superCom.ajaxReturn(0,"参数不能为空","");
 		case 1:
-			return superJson.ajaxReturn(0,"保留用户无法删除","");			
+			return superCom.ajaxReturn(0,"保留用户无法删除","");			
 		default :
 			int del=userservice.powerdel(id);
 			if(del==1)
-				return superJson.ajaxReturn(200,"用户删除成功","");
+				return superCom.ajaxReturn(200,"用户删除成功","");
 			else
-				return superJson.ajaxReturn(0,"用户删除失败","");		
+				return superCom.ajaxReturn(0,"用户删除失败","");		
 		}
 		
 	}
@@ -155,11 +155,11 @@ public class PowerController {
 	public String powerinfodata() {
 		System.out.println("DDDDDD"+userid+"D");
 		if(userid==0) {
-			return superJson.ajaxReturn(0,"超级权限编辑用户，获取用户id失败","");
+			return superCom.ajaxReturn(0,"超级权限编辑用户，获取用户id失败","");
 		}else {
 			List<AdminUser> adminuser =userservice.usergroup(userid);
 			userid=0;
-			return SuperCommon.SuperJson(adminuser,"超级权限中的账号编辑部分");
+			return superCom.SuperJson(adminuser,"超级权限中的账号编辑部分");
 		}	
 	}
 	//****
@@ -185,49 +185,49 @@ public class PowerController {
 					System.out.println("api获取的其他值有一个不为空，进入到编辑用户表单逻辑--------------");
 					if (password!=null&&password2!=null){
 						if(!password.equals(password2))
-							return superJson.ajaxReturn(0,"两次密码不一致","");
+							return superCom.ajaxReturn(0,"两次密码不一致","");
 						else {
 
 							int res=userservice.powerupdata(group_id,username,nicename,email,le_tel,password,status,user_id);
 					    	if(res!=1) {
-					    		return superJson.ajaxReturn(0,"操作失败","");
+					    		return superCom.ajaxReturn(0,"操作失败","");
 					    	}
-					    	return superJson.ajaxReturn(200,"操作成功","powerusermenu");
+					    	return superCom.ajaxReturn(200,"操作成功","powerusermenu");
 						}
 				    }else {
 				    	int res=userservice.powerupdata(group_id,username,nicename,email,le_tel,password,status,user_id);
 				    	if(res!=1) {
-				    		return superJson.ajaxReturn(0,"操作失败","");
+				    		return superCom.ajaxReturn(0,"操作失败","");
 				    	}
-				    	return superJson.ajaxReturn(200,"操作成功","powerusermenu");
+				    	return superCom.ajaxReturn(200,"操作成功","powerusermenu");
 				    }
 				}else {
-					String allsort=SuperCommon.getFieldValueListByName(name,AdminUser.class,"userId");
+					String allsort=superCom.getFieldValueListByName(name,AdminUser.class,"userId");
 					if(Integer.parseInt(allsort)==user_id) {
 						if (password!=null&&password2!=null){
 							if(!password.equals(password2))
-								return superJson.ajaxReturn(0,"两次密码不一致","");
+								return superCom.ajaxReturn(0,"两次密码不一致","");
 							else {
 
 								int res=userservice.powerupdata(group_id,username,nicename,email,le_tel,password,status,user_id);
 						    	if(res!=1) {
-						    		return superJson.ajaxReturn(0,"操作失败","");
+						    		return superCom.ajaxReturn(0,"操作失败","");
 						    	}
-						    	return superJson.ajaxReturn(200,"操作成功","powerusermenu");
+						    	return superCom.ajaxReturn(200,"操作成功","powerusermenu");
 							}
 					    }else {
 					    	int res=userservice.powerupdata(group_id,username,nicename,email,le_tel,password,status,user_id);
 					    	if(res!=1) {
-					    		return superJson.ajaxReturn(0,"操作失败","");
+					    		return superCom.ajaxReturn(0,"操作失败","");
 					    	}
-					    	return superJson.ajaxReturn(200,"操作成功","powerusermenu");
+					    	return superCom.ajaxReturn(200,"操作成功","powerusermenu");
 					    }
 					}else
-						return superJson.ajaxReturn(0,"操作失败，账号已被占用","");
+						return superCom.ajaxReturn(0,"操作失败，账号已被占用","");
 				}
 				
 			}else
-				return superJson.ajaxReturn(0,"操作失败，请将信息填写完整","");
+				return superCom.ajaxReturn(0,"操作失败，请将信息填写完整","");
 		//userid为空	
 		}else {
 			//如果传过来的值都不为空
@@ -236,19 +236,19 @@ public class PowerController {
 				if(name.size()==0) {
 					System.out.println("api获取的其他值有一个不为空，进入到编辑用户表单逻辑--------------");
 					if(!password.equals(password2))
-						return superJson.ajaxReturn(0,"两次密码不一致","");
+						return superCom.ajaxReturn(0,"两次密码不一致","");
 					else {
 						int res=userservice.powerinsert(group_id,username,nicename,email,le_tel,password,status,user_id);
 				    	if(res!=1) {
-				    		return superJson.ajaxReturn(0,"操作失败","");
+				    		return superCom.ajaxReturn(0,"操作失败","");
 				    	}
-				    	return superJson.ajaxReturn(200,"操作成功","powerusermenu");
+				    	return superCom.ajaxReturn(200,"操作成功","powerusermenu");
 					}		
 				}else
-					return superJson.ajaxReturn(0,"操作失败，账号已被占用","");
+					return superCom.ajaxReturn(0,"操作失败，账号已被占用","");
 					    
 			}else
-				return superJson.ajaxReturn(0,"操作失败，请将信息填写完整","");
+				return superCom.ajaxReturn(0,"操作失败，请将信息填写完整","");
 		}		
 	}	
 	
@@ -273,23 +273,23 @@ public class PowerController {
 				System.out.println("api获取的其他值有一个不为空，进入到编辑用户表单逻辑--------------");
 				if (password!=null){
 					if(password2!=null) {
-						return superJson.ajaxReturn(0,"确认密码不能为空","");
+						return superCom.ajaxReturn(0,"确认密码不能为空","");
 					}
 					if(!password.equals(password2))
-						return superJson.ajaxReturn(0,"两次密码不一致","");
+						return superCom.ajaxReturn(0,"两次密码不一致","");
 			    }else {
 			    	int res=userservice.powerupdata(group_id,username,nicename,email,le_tel,password,status,user_id);
 			    	if(res==1) {
-			    		return superJson.ajaxReturn(200,"操作成功","Admin/power/poweruser");
+			    		return superCom.ajaxReturn(200,"操作成功","Admin/power/poweruser");
 			    	}
 			    	else {
-			    		return superJson.ajaxReturn(0,"操作失败","");
+			    		return superCom.ajaxReturn(0,"操作失败","");
 			    	}
 			    }
 			}else {
 				System.out.println("api获取的其他值都为空，进入到返回超级权限的账号编辑ajax部分--------------");
 				List<AdminUser> adminuser =userservice.usergroup(user_id);
-				return SuperCommon.SuperJson(adminuser,"超级权限中的账号编辑部分");
+				return superCom.SuperJson(adminuser,"超级权限中的账号编辑部分");
 			}		
 		}else {
 			userid=0;
